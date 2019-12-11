@@ -13,7 +13,7 @@ describe DockingStation do
   end
   it 'does not dock bikes when bikes are Full' do
     subject = DockingStation.new
-    (subject.capacity-1).times do
+    DockingStation::DEFAULT_CAPACITY.times do
       subject.bikes.append(Bike.new)
     end
     puts subject.bikes.count
