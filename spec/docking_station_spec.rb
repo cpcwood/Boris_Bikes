@@ -13,15 +13,14 @@ describe DockingStation do
   end
   it 'does not dock bikes when bikes are Full' do
     subject = DockingStation.new
-    DockingStation::DEFAULT_CAPACITY.times do
+    (subject.capacity - 1).times do
       subject.bikes.append(Bike.new)
     end
     puts subject.bikes.count
     expect{subject.dock_bike}.to raise_error
   end
-  it 'it docks bike' do
+  it 'it docks bikes when not full' do
     bike = subject.release_bike
     expect(subject.dock_bike(bike)).to be true
-
   end
 end
