@@ -32,7 +32,6 @@ class DockingStation
       end
     }
     @bikes -= bikes_to_return
-    p @bikes
     return bikes_to_return
   end
 
