@@ -10,4 +10,7 @@ class Bike
   def broken
     @working = false
   end
+  def fixed
+    @working = true
+  end
 end

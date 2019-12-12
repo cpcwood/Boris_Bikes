@@ -8,8 +8,10 @@ describe Van do
   end
 
   it 'drops broken bikes to garage and van is then empty' do
+    garage = double("garage", :van_drop_off => nil)
     subject.broken_bikes = ["bike_1", "bike_2"]
-    expect(subject.drop_broken_bikes(garage)).to eq([])
+    subject.drop_broken_bikes(garage)
+    expect(subject.broken_bikes).to eq([])
   end
 
   it 'picks up fixed bikes from garage' do
@@ -18,7 +20,9 @@ describe Van do
   end
 
   it "drops fixed bikes to docking station and van is then empty" do
+    docking_station = double("docking_station", :van_drop_off => nil)
     subject.fixed_bikes = ["bike_1", "bike_2"]
-    expect(subject.drop_fixed_bikes(docking_station)).to eq([])
+    subject.drop_fixed_bikes(docking_station)
+    expect(subject.fixed_bikes).to eq([])
   end
 end

@@ -1,18 +1,18 @@
 class Garage
-@bikes = []
+  attr_accessor :bikes
+  def initialize
+    @bikes = []
+  end
+
+  def van_drop_off(broken_bikes)
+    broken_bikes.each {|bike| @bikes.append(bike)}
+  end
+
+  def fix_bikes
+    @bikes.map! {|bike| bike.fixed}
+  end
+
   def van_pick_up
-    bikes_to_return = []
-    @bikes.each{|bike|
-      if bike.working? == true
-        bikes_to_return << bike
-      end
-    }
-    @bikes -= bikes_to_return
-    return bikes_to_return
+    return @bikes
   end
-
-  def van_drop_off(bikes)
-    bikes.each {|bike| @bikes.append(bike)}
-  end
-
 end
