@@ -2,7 +2,7 @@ require "docking_station"
 
 describe DockingStation do
 
-let(:bike) { double :bike }
+  let(:bike) { double :bike }
 
   before(:each) do
     allow(bike).to receive(:working?).and_return(true)
@@ -36,19 +36,14 @@ let(:bike) { double :bike }
     expect{subject.release_bike}.to raise_error("No working bikes in rack")
   end
 
-  it 'releases working bikes' do
-    # let's substitute our bike
-    # for a double
-    subject.dock_bike(bike)
-    # no error yet: and no problem when
-    # we release the 'bike': we just
-    # get the double we made
-    bike = subject.release_bike
-    # a problem here: this double doesn't
-    # know how to respond_to working?
-    # (we'll deal with that in the next
-    # challenge: mocking behaviour).
-    expect(bike.working?).to be true
+  it 'allows bikes to be picked up if broken' do
+    broken_1 = double("broken_1", :working? => false, :broken => false)
+    broken_2 = double("broken_2", :working? => false, :broken => false)
+    working_1 = double("working_1", :working? => true)
+    subject.dock_bike(broken_1,true)
+    subject.dock_bike(broken_2,true)
+    subject.dock_bike(working_1)
+    expect(subject.van_pick_up).to eq [broken_1, broken_2]
   end
 
 end

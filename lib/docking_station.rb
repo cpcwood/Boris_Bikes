@@ -1,4 +1,6 @@
 require_relative "bike"
+require_relative "van"
+require_relative "garage"
 
 class DockingStation
   attr_accessor :bikes
@@ -13,13 +15,25 @@ class DockingStation
     if empty?
       raise 'No bikes in bike rack'
     else
-    @bikes.each{|bike|
+    @bikes.each_with_index{|bike, index|
       if bike.working? == true
-        return bike
+        return @bikes.slice!(index)
       end
     }
     raise 'No working bikes in rack'
     end
+  end
+
+  def van_pick_up
+    bikes_to_return = []
+    @bikes.each{|bike|
+      if bike.working? == false
+        bikes_to_return << bike
+      end
+    }
+    @bikes -= bikes_to_return
+    p @bikes
+    return bikes_to_return
   end
 
   def dock_bike(bike, broken = false)
