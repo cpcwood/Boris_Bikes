@@ -46,4 +46,11 @@ describe DockingStation do
     expect(subject.van_pick_up).to eq [broken_1, broken_2]
   end
 
+  it 'allows bikes to be dropped off if broken' do
+    fixed_1 = double("fixed_1", :working? => true)
+    fixed_2 = double("fixed_2", :working? => true)
+    subject.van_drop_off([fixed_1, fixed_2])
+    expect(subject.bikes).to eq [fixed_1, fixed_2]
+  end
+
 end

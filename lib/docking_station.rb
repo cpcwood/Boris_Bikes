@@ -35,6 +35,10 @@ class DockingStation
     return bikes_to_return
   end
 
+  def van_drop_off(bikes)
+    bikes.each {|bike| @bikes.append(bike)}
+  end
+
   def dock_bike(bike, broken = false)
     if full?
        raise 'Bike rack is full'
