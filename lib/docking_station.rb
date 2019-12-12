@@ -16,11 +16,15 @@ class DockingStation
     Bike.new
     end
   end
-  def dock_bike(bike)
+  def dock_bike(bike, broken = false)
     if full?
        raise
     else
-       true
+      if broken == true
+        bike.broken
+      end
+      @bikes.append(bike)
+      "bike docked"
     end
   end
 

@@ -21,6 +21,10 @@ describe DockingStation do
   end
   it 'it docks bikes when not full' do
     bike = subject.release_bike
-    expect(subject.dock_bike(bike)).to be true
+    expect(subject.dock_bike(bike)).to eq("bike docked")
+  end
+  it 'it allows a broken bike to be reported when being docked' do
+    bike = subject.release_bike
+    expect(subject.dock_bike(bike,true)).to eq("bike docked")
   end
 end
