@@ -1,11 +1,10 @@
 class Garage
-  attr_accessor :bikes
   def initialize
     @bikes = []
   end
 
   def van_drop_off(broken_bikes)
-    broken_bikes.each {|bike| @bikes.append(bike)}
+    @bikes += broken_bikes
   end
 
   def fix_bikes
@@ -13,6 +12,8 @@ class Garage
   end
 
   def van_pick_up
-    return @bikes
+    bikes_to_return = @bikes.select{|bike| bike.working?}
+    @bikes -= bikes_to_return
+    bikes_to_return
   end
 end

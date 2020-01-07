@@ -2,27 +2,32 @@ require "van"
 
 describe Van do
 
-  it 'picks up broken bikes from docking station' do
-    docking_station = double("docking_station", :van_pick_up => ["bike_1", "bike_2"])
-    expect(subject.pick_broken_bikes(docking_station)).to eq(["bike_1", "bike_2"])
+  let(:working_bike){double :working_bike, :working? => true}
+  let(:broken_bike){double :broken_bike, :working? => false}
+  let(:location){double :docking_station, :van_drop_off => nil, :van_pick_up => [working_bike, broken_bike]}
+
+  describe '#pick_broken_bikes' do
+    it 'picks up bikes from docking station' do
+      expect(location).to receive(:van_pick_up)
+      subject.pick_up_bikes(location)
+    end
   end
 
-  it 'drops broken bikes to garage and van is then empty' do
-    garage = double("garage", :van_drop_off => nil)
-    subject.broken_bikes = ["bike_1", "bike_2"]
-    subject.drop_broken_bikes(garage)
-    expect(subject.broken_bikes).to eq([])
-  end
-
-  it 'picks up fixed bikes from garage' do
-    garage = double("garage", :van_pick_up => ["bike_1", "bike_2"])
-    expect(subject.pick_fixed_bikes(garage)).to eq(["bike_1", "bike_2"])
-  end
-
-  it "drops fixed bikes to docking station and van is then empty" do
-    docking_station = double("docking_station", :van_drop_off => nil)
-    subject.fixed_bikes = ["bike_1", "bike_2"]
-    subject.drop_fixed_bikes(docking_station)
-    expect(subject.fixed_bikes).to eq([])
+  describe '#drop_bikes' do
+    it 'drops fixed bikes to location' do
+      subject.pick_up_bikes(location)
+      expect(location).to receive(:van_drop_off).with([working_bike])
+      subject.drop_bikes(location: location, working: true)
+    end
+    it 'drops broken bikes to location' do
+      subject.pick_up_bikes(location)
+      expect(location).to receive(:van_drop_off).with([broken_bike])
+      subject.drop_bikes(location: location, working: false)
+    end
+    it 'removes dropped bikes from van' do
+      subject.pick_up_bikes(location)
+      subject.drop_bikes(location: location, working: true)
+      expect{subject.drop_bikes(location: location, working: true)}.to raise_error('No bikes to drop')
+    end
   end
 end

@@ -1,29 +1,16 @@
-require_relative "docking_station"
-
 class Van
-  attr_accessor :broken_bikes, :fixed_bikes
   def initialize
-    @broken_bikes = []
-    @fixed_bikes = []
+    @bikes = []
   end
 
-  def pick_broken_bikes(docking_station)
-    bikes = docking_station.van_pick_up
-    bikes.each {|bike| @broken_bikes.append(bike)}
+  def pick_up_bikes(location)
+    @bikes += location.van_pick_up
   end
 
-  def drop_broken_bikes(garage)
-    garage.van_drop_off(@broken_bikes)
-    @broken_bikes = []
-  end
-
-  def pick_fixed_bikes(garage)
-    bikes = garage.van_pick_up
-    bikes.each {|bike| @fixed_bikes.append(bike)}
-  end
-
-  def drop_fixed_bikes(docking_station)
-    docking_station.van_drop_off(@fixed_bikes)
-    @fixed_bikes = []
+  def drop_bikes(location:, working:)
+    selected = @bikes.select{|bike| bike.working? == working}
+    @bikes -= selected
+    raise 'No bikes to drop' if selected.empty?
+    location.van_drop_off(selected)
   end
 end
