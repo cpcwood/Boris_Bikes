@@ -8,7 +8,7 @@ class Garage
   end
 
   def fix_bikes
-    @bikes.map! {|bike| bike.fixed}
+    @bikes.each {|bike| bike.fixed}
   end
 
   def van_pick_up
